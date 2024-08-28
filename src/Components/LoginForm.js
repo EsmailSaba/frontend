@@ -1,4 +1,3 @@
-// src/components/LoginForm.js
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,11 +6,31 @@ function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Username: ${username}, Password: ${password}`);
+    
+    try {
+      const response = await fetch('API hena', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login successful:', data);
+        // Handle successful login (e.g., redirect, store token)
+      } else {
+        console.error('Login failed:', response.statusText);
+        // Handle login failure
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      // Handle error
+    }
   };
-
   return (
     <div>
       <form
